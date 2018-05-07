@@ -12,12 +12,13 @@ import Typography from 'material-ui/Typography'
 const games = [1, 2, 3]
 
 class DisplayBatches extends PureComponent {
-  // componentWillMount() {
-  //   if (this.props.authenticated) {
-  //     if (this.props.games === null) this.props.getGames()
-  //     if (this.props.users === null) this.props.getUsers()
-  //   }
-  // }
+  componentWillMount() {
+    console.log("ComponentWillMount has fired", this.props.batches)
+    if (this.props.authenticated) {
+      if (this.props.batches === null) this.props.getBatches()
+      // if (this.props.users === null) this.props.getUsers()
+    }
+  }
 
   renderGame = (game) => {
     // const {users, history} = this.props
@@ -89,13 +90,13 @@ class DisplayBatches extends PureComponent {
 
 //onClick={createBatch}
 
-// const mapStateToProps = state => ({
-//   authenticated: state.currentUser !== null,
-//   users: state.users === null ? null : state.users,
-//   games: state.games === null ?
-//     null : Object.values(state.games).sort((a, b) => b.id - a.id)
-// })
+const mapStateToProps = state => ({
+  authenticated: state.currentUser !== null,
+  users: state.users === null ? null : state.users,
+  batches: state.batches === null ?
+    null : Object.values(state.batches)
+})
 
 // export default DisplayBatches
 
-export default connect(null, {getBatches})(DisplayBatches)
+export default connect(mapStateToProps, {getBatches})(DisplayBatches)

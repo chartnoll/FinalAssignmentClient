@@ -29,6 +29,7 @@ const addBatch = batch => ({
 
 
 export const getBatches = () => (dispatch, getState) => {
+  console.log("getBatches action has been fired!")
   const state = getState()
   if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
