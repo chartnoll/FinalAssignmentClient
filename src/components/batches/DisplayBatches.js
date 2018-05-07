@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react'
 import {getBatches, createGame} from '../../actions/batches'
-import {getUsers} from '../../actions/users'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import Button from 'material-ui/Button'
@@ -16,61 +15,47 @@ class DisplayBatches extends PureComponent {
     console.log("ComponentWillMount has fired", this.props.batches)
     if (this.props.authenticated) {
       if (this.props.batches === null) this.props.getBatches()
-      // if (this.props.users === null) this.props.getUsers()
     }
   }
 
-  renderGame = (game) => {
-    // const {users, history} = this.props
+  renderGame = (batch) => {
+    const {history} = this.props
 
-    //key={game.id}
     return (<Card className="game-card">
       <CardContent>
         <Typography color="textSecondary">
-          Just some random text
+          Batch number&nbsp;
+          {batch.id}
+        </Typography>
+        <Typography color="textSecondary">
+          Start date&nbsp;
+          {batch.startDate}
+        </Typography>
+        <Typography color="textSecondary">
+          Start date&nbsp;
+          {batch.endDate}
         </Typography>
       </CardContent>
+      <CardActions>
+        <Button
+          size="small"
+          onClick={() => history.push(`/batches/${batch.id}`)}
+          >
+            Watch
+          </Button>
+      </CardActions>
     </Card>)
   }
 
 
-  // return (<Card className="game-card">
-  //   <CardContent>
-  //     <Typography color="textSecondary">
-  //     Just some random text
-  //       This game is played by&nbsp;
-  //       {
-  //         game.players
-  //           .map(player => users[player.userId].firstName)
-  //           .join(' and ')
-  //       }
-  //     </Typography>
-  //     <Typography variant="headline" component="h2">
-  //       Game #{game.id}
-  //     </Typography>
-  //     <Typography color="textSecondary">
-  //       Status: {game.status}
-  //     </Typography>
-  //   </CardContent>
-  //   <CardActions>
-  //     <Button
-  //       size="small"
-  //       onClick={() => history.push(`/games/${game.id}`)}
-  //     >
-  //       Watch
-  //     </Button>
-  //   </CardActions>
-  // </Card>)
-
-
   render() {
-    // const {games, users, authenticated, createGame} = this.props
+    const {batches, authenticated} = this.props
 
-    // if (!authenticated) return (
-		// 	<Redirect to="/login" />
-		// )
-    //
-    // if (games === null || users === null) return null
+    if (!authenticated) return (
+			<Redirect to="/login" />
+		)
+
+    if( batches === null) return null
 
     return (<Paper className="outer-paper">
       <Button
@@ -82,21 +67,21 @@ class DisplayBatches extends PureComponent {
       </Button>
 
       <div>
-        {games.map(game => this.renderGame(game))}
+        Some stuff
+        {batches.map(batch => this.renderGame(batch))}
+
       </div>
     </Paper>)
   }
 }
-
+//{batches.map(game => this.renderGame(game))}
 //onClick={createBatch}
 
 const mapStateToProps = state => ({
   authenticated: state.currentUser !== null,
-  users: state.users === null ? null : state.users,
   batches: state.batches === null ?
     null : Object.values(state.batches)
 })
 
-// export default DisplayBatches
 
 export default connect(mapStateToProps, {getBatches})(DisplayBatches)
