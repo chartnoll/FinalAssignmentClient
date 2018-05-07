@@ -55,17 +55,16 @@ class BatchDetails extends PureComponent {
   }
 }
 
-// const mapStateToProps = (state, props) => ({
-//   authenticated: state.currentUser !== null,
-//   userId: state.currentUser && userId(state.currentUser.jwt),
-//   game: state.games && state.games[props.match.params.id],
-//   users: state.users
-// })
-//
-// const mapDispatchToProps = {
-//   getGames, getUsers, joinGame, updateGame
-// }
+const mapStateToProps = (state, props) => ({
+  authenticated: state.currentUser !== null,
+  userId: state.currentUser && userId(state.currentUser.jwt),
+  batch: state.batches && state.batches[props.match.params.id],
+})
 
-export default BatchDetails
+const mapDispatchToProps = {
+  getGames, joinGame, updateGame
+}
 
-//export default connect(mapStateToProps, mapDispatchToProps)(BatchDetails)
+// export default BatchDetails
+
+export default connect(mapStateToProps, mapDispatchToProps)(BatchDetails)
