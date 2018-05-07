@@ -1,56 +1,55 @@
 import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {getGames, joinGame, updateGame} from '../../actions/games'
+import {getBatches, createBatch} from '../../actions/batches'
 import {userId} from '../../jwt'
 import Paper from 'material-ui/Paper'
-// import Board from './Board'
+import Card, { CardActions, CardContent } from 'material-ui/Card'
+import Typography from 'material-ui/Typography'
+
+const students = [1,2,3,4]
 
 class BatchDetails extends PureComponent {
 
-  // componentWillMount() {
-  //   if (this.props.authenticated) {
-  //     if (this.props.game === null) this.props.getGames()
-  //     if (this.props.users === null) this.props.getUsers()
-  //   }
-  // }
+  componentWillMount() {
+    if (this.props.authenticated) {
+      if (this.props.batch === null) this.props.getBatches()
+    }
+  }
 
-  // joinGame = () => this.props.joinGame(this.props.game.id)
+  renderStudent = (student) => {
+    const {history} = this.props
 
-  // makeMove = (toRow, toCell) => {
-  //   const {game, updateGame} = this.props
-  //
-  //   const board = game.board.map(
-  //     (row, rowIndex) => row.map((cell, cellIndex) => {
-  //       if (rowIndex === toRow && cellIndex === toCell) return game.turn
-  //       else return cell
-  //     })
-  //   )
-  //   updateGame(game.id, board)
-  // }
-
-
+    return (<Card className="game-card">
+      <CardContent>
+        <Typography color="textSecondary">
+          Batch number&nbsp;
+          {students}
+        </Typography>
+      </CardContent>
+    </Card>)
+  }
 
   render() {
-    // const {game, users, authenticated, userId} = this.props
+    const {batch, authenticated, userId} = this.props
 
-    // if (!authenticated) return (
-		// 	<Redirect to="/login" />
-		// )
-    //
-    // if (game === null || users === null) return 'Loading...'
-    // if (!game) return 'Not found'
-    //
-    // const player = game.players.find(p => p.userId === userId)
-    //
-    // const winner = game.players
-    //   .filter(p => p.symbol === game.winner)
-    //   .map(p => p.userId)[0]
+    if (!authenticated) return (
+			<Redirect to="/login" />
+		)
+
+    if (batch === null) return 'Loading...'
+    if (!batch) return 'Not found'
 
     return (<Paper className="outer-paper">
-      <h1>Game #</h1>
+      <h1>Batch # {batch.batchNumber}</h1>
 
-      <p>Status:</p>
+      <p>Start date: {batch.startDate}</p>
+      <p>End date: {batch.endDate}</p>
+
+      <div>
+        Each student
+        {students.map(student => this.renderStudent(student))}
+      </div>
     </Paper>)
   }
 }
@@ -61,10 +60,10 @@ const mapStateToProps = (state, props) => ({
   batch: state.batches && state.batches[props.match.params.id],
 })
 
-const mapDispatchToProps = {
-  getGames, joinGame, updateGame
-}
+// state.batches.find(b => b.batchNumber === props.match.params.id)
 
-// export default BatchDetails
+const mapDispatchToProps = {
+  getBatches, createBatch
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(BatchDetails)

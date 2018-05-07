@@ -46,7 +46,7 @@ class DisplayBatches extends PureComponent {
       <CardActions>
         <Button
           size="small"
-          onClick={() => history.push(`/batches/${batch.batchNumber}`)}
+          onClick={() => history.push(`/batches/${batch.id}`)}
           >
             Watch
           </Button>
