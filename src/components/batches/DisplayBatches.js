@@ -18,8 +18,11 @@ class DisplayBatches extends PureComponent {
 
   createNewBatch = () => {
     var newBatchNumber = prompt("Please enter the new batch number")
-    console.log("Creating batch number", newBatchNumber)
-    this.props.createBatch(newBatchNumber)
+    var startDate = prompt("Please enter the new batch start date")
+    var endDate = prompt("Please enter the new batch end date")
+    var newBatch = {newBatchNumber, startDate, endDate}
+    console.log("Creating batch number", newBatch)
+    this.props.createBatch(newBatch)
   }
 
   renderGame = (batch) => {
@@ -29,7 +32,7 @@ class DisplayBatches extends PureComponent {
       <CardContent>
         <Typography color="textSecondary">
           Batch number&nbsp;
-          {batch.id}
+          {batch.batchNumber}
         </Typography>
         <Typography color="textSecondary">
           Start date&nbsp;
@@ -43,7 +46,7 @@ class DisplayBatches extends PureComponent {
       <CardActions>
         <Button
           size="small"
-          onClick={() => history.push(`/batches/${batch.id}`)}
+          onClick={() => history.push(`/batches/${batch.batchNumber}`)}
           >
             Watch
           </Button>

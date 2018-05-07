@@ -56,8 +56,8 @@ export const getBatches = () => (dispatch, getState) => {
 //     .catch(err => console.error(err))
 // }
 
-export const createBatch = (newBatchNumber) => (dispatch, getState) => {
-  console.log("Inside the createBatch action", newBatchNumber)
+export const createBatch = (newBatch) => (dispatch, getState) => {
+  console.log("Inside the createBatch action", newBatch)
   const state = getState()
   const jwt = state.currentUser.jwt
 
@@ -66,7 +66,7 @@ export const createBatch = (newBatchNumber) => (dispatch, getState) => {
   request
     .post(`${baseUrl}/batches`)
     .set('Authorization', `Bearer ${jwt}`)
-    .send({ newBatchNumber })
+    .send(newBatch)
     .then(result => dispatch(addBatch(result.body)))
     .catch(err => console.error(err))
 }
