@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {getBatches, createGame} from '../../actions/batches'
+import {getBatches, createBatch} from '../../actions/batches'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import Button from 'material-ui/Button'
@@ -8,14 +8,18 @@ import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
 // import './GamesList.css'
 
-const games = [1, 2, 3]
-
 class DisplayBatches extends PureComponent {
   componentWillMount() {
     console.log("ComponentWillMount has fired", this.props.batches)
     if (this.props.authenticated) {
       if (this.props.batches === null) this.props.getBatches()
     }
+  }
+
+  createNewBatch = () => {
+    var newBatchNumber = prompt("Please enter the new batch number")
+    console.log("Creating batch number", newBatchNumber)
+    this.props.createBatch(newBatchNumber)
   }
 
   renderGame = (batch) => {
@@ -49,7 +53,7 @@ class DisplayBatches extends PureComponent {
 
 
   render() {
-    const {batches, authenticated} = this.props
+    const {batches, authenticated, createBatch} = this.props
 
     if (!authenticated) return (
 			<Redirect to="/login" />
@@ -61,9 +65,10 @@ class DisplayBatches extends PureComponent {
       <Button
         color="primary"
         variant="raised"
+        onClick={this.createNewBatch}
         className="create-game"
       >
-        Edit and Create Batches
+        Create a new batch
       </Button>
 
       <div>
@@ -74,8 +79,6 @@ class DisplayBatches extends PureComponent {
     </Paper>)
   }
 }
-//{batches.map(game => this.renderGame(game))}
-//onClick={createBatch}
 
 const mapStateToProps = state => ({
   authenticated: state.currentUser !== null,
@@ -84,4 +87,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getBatches})(DisplayBatches)
+export default connect(mapStateToProps, {getBatches, createBatch})(DisplayBatches)
