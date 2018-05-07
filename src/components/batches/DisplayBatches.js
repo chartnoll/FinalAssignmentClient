@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {getGames, createGame} from '../../actions/games'
+import {getBatches, createGame} from '../../actions/batches'
 import {getUsers} from '../../actions/users'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
@@ -96,6 +96,6 @@ class DisplayBatches extends PureComponent {
 //     null : Object.values(state.games).sort((a, b) => b.id - a.id)
 // })
 
-export default DisplayBatches
+// export default DisplayBatches
 
-// export default connect(mapStateToProps, {getGames, getUsers, createGame})(DisplayBatches)
+export default connect(null, {getBatches})(DisplayBatches)
