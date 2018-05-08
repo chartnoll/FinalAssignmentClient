@@ -2,13 +2,12 @@ import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {getBatches, createBatch} from '../../actions/batches'
-import {getStudents, createStudent} from '../../actions/students'
+import {getStudents, createStudent, deleteStudent, editStudent} from '../../actions/students'
 import {userId} from '../../jwt'
 import Paper from 'material-ui/Paper'
 import Card, { CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import Avatar from 'material-ui/Avatar'
 import Typography from 'material-ui/Typography'
-import {anImageUrl} from '../../constants'
 import Button from 'material-ui/Button'
 
 class BatchDetails extends PureComponent {
@@ -20,13 +19,24 @@ class BatchDetails extends PureComponent {
     }
   }
 
-  createNewStudent = () => {
+  createOnClick = () => {
     var studentName = prompt("Please enter students name")
     var studentPicture = prompt("Please enter the student picture URL")
     const batchNumber = this.props.batch.batchNumber
     var newStudent = {batchNumber, studentName, studentPicture}
     console.log("Creating batch number", batchNumber)
     this.props.createStudent(newStudent)
+  }
+
+  deleteOnClick = (studentId) => {
+    this.props.deleteStudent(studentId, this.props.students)
+    this.props.getStudents(this.props.batch.batchNumber)
+  }
+
+  editOnClick = (studentId) => {
+    var studentName = prompt("Please enter students name")
+    const studentEdit = {studentId, studentName}
+    this.props.editStudent(studentEdit)
   }
 
   renderStudent = (student) => {
@@ -36,16 +46,14 @@ class BatchDetails extends PureComponent {
       <Card
         key={student.id}
         className="student-card"
-        width="120"
-        onClick={() => history.push(`/students/${student.id}`)}>
+        width="120">
       <CardHeader
         title={student.studentName}
-        // subtitle="Subtitle"
         avatar={<Avatar src={student.studentPicture}/>}
       />
       <CardActions>
-        <Button label="Edit">Edit</Button>
-        <Button label="Delete">Delete</Button>
+        <Button onClick={ () => this.editOnClick(student.id)} label="Edit">Edit</Button>
+        <Button onClick={ () => this.deleteOnClick(student.id)} label="Delete">Delete</Button>
     </CardActions>
     </Card>)
   }
@@ -68,7 +76,7 @@ class BatchDetails extends PureComponent {
       <Button
         color="primary"
         variant="raised"
-        onClick={this.createNewStudent}
+        onClick={ () => this.createOnClick()}
         className="create-student"
       >
         Create a new student
@@ -92,7 +100,7 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = {
-  getBatches, createBatch, getStudents, createStudent
+  getBatches, createBatch, getStudents, createStudent, deleteStudent, editStudent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BatchDetails)

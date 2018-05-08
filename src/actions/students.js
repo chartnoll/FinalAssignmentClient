@@ -6,8 +6,6 @@ import {isExpired} from '../jwt'
 export const ADD_STUDENT = 'ADD_STUDENT'
 export const UPDATE_STUDENT = 'UPDATE_STUDENT'
 export const UPDATE_STUDENTS = 'UPDATE_STUDENTS'
-// export const JOIN_GAME_SUCCESS = 'JOIN_GAME_SUCCESS'
-// export const UPDATE_GAME_SUCCESS = 'UPDATE_GAME_SUCCESS'
 
 const updateStudents = students => ({
   type: UPDATE_STUDENTS,
@@ -18,14 +16,6 @@ const addStudent = student => ({
   type: ADD_STUDENT,
   payload: student
 })
-
-// const updateGameSuccess = () => ({
-//   type: UPDATE_GAME_SUCCESS
-// })
-//
-// const joinGameSuccess = () => ({
-//   type: JOIN_GAME_SUCCESS
-// })
 
 
 export const getStudents = (batchId) => (dispatch, getState) => {
@@ -46,19 +36,6 @@ export const getStudents = (batchId) => (dispatch, getState) => {
     .catch(err => console.error(err))
 }
 
-// export const joinGame = (gameId) => (dispatch, getState) => {
-//   const state = getState()
-//   const jwt = state.currentUser.jwt
-//
-//   if (isExpired(jwt)) return dispatch(logout())
-//
-//   request
-//     .post(`${baseUrl}/games/${gameId}/players`)
-//     .set('Authorization', `Bearer ${jwt}`)
-//     .then(_ => dispatch(joinGameSuccess()))
-//     .catch(err => console.error(err))
-// }
-
 export const createStudent = (newStudent) => (dispatch, getState) => {
   console.log("Inside the createStudent action", newStudent)
   const state = getState()
@@ -74,16 +51,34 @@ export const createStudent = (newStudent) => (dispatch, getState) => {
     .catch(err => console.error(err))
 }
 
-// export const updateGame = (gameId, board) => (dispatch, getState) => {
-//   const state = getState()
-//   const jwt = state.currentUser.jwt
-//
-//   if (isExpired(jwt)) return dispatch(logout())
-//
-//   request
-//     .patch(`${baseUrl}/games/${gameId}`)
-//     .set('Authorization', `Bearer ${jwt}`)
-//     .send({ board })
-//     .then(_ => dispatch(updateGameSuccess()))
-//     .catch(err => console.error(err))
-// }
+export const editStudent = (studentEdit) => (dispatch, getState) => {
+  console.log("Inside the editStudent action", studentEdit.studentId)
+  const state = getState()
+  const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
+
+  request
+    .patch(`${baseUrl}/students/${studentEdit.studentId}`)
+    .set('Authorization', `Bearer ${jwt}`)
+    .send(studentEdit)
+    .catch(err => console.error(err))
+}
+
+export const deleteStudent = (studentId, currStudents) => (dispatch, getState) => {
+  console.log("Inside the deleteStudent action", studentId)
+  const state = getState()
+  const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
+
+  request
+    .delete(`${baseUrl}/students/${studentId}`)
+    .set('Authorization', `Bearer ${jwt}`)
+    .catch(err => console.error(err))
+
+  // console.log("Old state", currStudents)
+  // const newState = currStudents.filter( (student, index) => student.id !== studentId)
+  // console.log("Creating new state", newState)
+  // updateStudents(newState)
+}
