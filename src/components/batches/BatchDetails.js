@@ -2,11 +2,14 @@ import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {getBatches, createBatch} from '../../actions/batches'
-import {getStudents} from '../../actions/students'
+import {getStudents, createStudent} from '../../actions/students'
 import {userId} from '../../jwt'
 import Paper from 'material-ui/Paper'
-import Card, { CardActions, CardContent } from 'material-ui/Card'
+import Card, { CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import Avatar from 'material-ui/Avatar'
 import Typography from 'material-ui/Typography'
+import {anImageUrl} from '../../constants'
+import Button from 'material-ui/Button'
 
 class BatchDetails extends PureComponent {
 
@@ -17,16 +20,33 @@ class BatchDetails extends PureComponent {
     }
   }
 
+  createNewStudent = () => {
+    var studentName = prompt("Please enter students name")
+    var studentPicture = prompt("Please enter the student picture URL")
+    const batchNumber = this.props.batch.batchNumber
+    var newStudent = {batchNumber, studentName, studentPicture}
+    console.log("Creating batch number", batchNumber)
+    this.props.createStudent(newStudent)
+  }
+
   renderStudent = (student) => {
     const {history} = this.props
 
-    return (<Card className="game-card">
-      <CardContent>
-        <Typography color="textSecondary">
-          Batch number&nbsp;
-          {student.studentName}
-        </Typography>
-      </CardContent>
+    return (
+      <Card
+        key={student.id}
+        className="student-card"
+        width="120"
+        onClick={() => history.push(`/students/${student.id}`)}>
+      <CardHeader
+        title={student.studentName}
+        // subtitle="Subtitle"
+        avatar={<Avatar src={student.studentPicture}/>}
+      />
+      <CardActions>
+        <Button label="Edit">Edit</Button>
+        <Button label="Delete">Delete</Button>
+    </CardActions>
     </Card>)
   }
 
@@ -45,6 +65,14 @@ class BatchDetails extends PureComponent {
 
       <p>Start date: {batch.startDate}</p>
       <p>End date: {batch.endDate}</p>
+      <Button
+        color="primary"
+        variant="raised"
+        onClick={this.createNewStudent}
+        className="create-student"
+      >
+        Create a new student
+      </Button>
 
       <div>
         Each student
@@ -64,7 +92,7 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = {
-  getBatches, createBatch, getStudents
+  getBatches, createBatch, getStudents, createStudent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BatchDetails)

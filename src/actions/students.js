@@ -70,7 +70,7 @@ export const createStudent = (newStudent) => (dispatch, getState) => {
     .post(`${baseUrl}/students`)
     .set('Authorization', `Bearer ${jwt}`)
     .send(newStudent)
-    .then(result => dispatch(newStudent(result.body)))
+    .then(result => dispatch(addStudent(result.body)))
     .catch(err => console.error(err))
 }
 
