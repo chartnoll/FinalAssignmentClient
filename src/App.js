@@ -7,6 +7,7 @@ import GameDetails from './components/games/GameDetails'
 import LogoutPage from './components/logout/LogoutPage'
 import DisplayBatches from './components/batches/DisplayBatches'
 import BatchDetails from './components/batches/BatchDetails'
+import DisplayStudent from './components/evaluations/DisplayStudent'
 import './App.css'
 import TopBar from './components/layout/TopBar'
 
@@ -28,6 +29,7 @@ class App extends Component {
             <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/batches" component={DisplayBatches} />
             <Route exact path="/batches/:id" component={BatchDetails} />
+            <Route exact path="/students/:id" component={DisplayStudent} />
             <Route exact path="/games" component={GamesList} />
             <Route exact path="/games/:id" component={GameDetails} />
             <Route exact path="/" render={ () => <Redirect to="/batches" /> } />
