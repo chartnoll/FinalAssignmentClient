@@ -19,7 +19,7 @@ const addEvaluation = evaluation => ({
 
 
 export const getEvaluations = (studentId) => (dispatch, getState) => {
-  console.log("getStudents action has been fired! for batch", studentId)
+  console.log("getEvaluations action has been fired! for student", studentId)
   const state = getState()
   if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
@@ -30,7 +30,7 @@ export const getEvaluations = (studentId) => (dispatch, getState) => {
     .get(`${baseUrl}/evaluations`)
     .set('Authorization', `Bearer ${jwt}`)
     .then(result => {
-      console.log("THis was returned!",result.body)
+      console.log("These evaluations were returned!",result.body)
       dispatch(updateEvaluations(result.body))
     })
     .catch(err => console.error(err))
