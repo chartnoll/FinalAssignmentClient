@@ -8,6 +8,7 @@ import Paper from 'material-ui/Paper'
 import Button from 'material-ui/Button'
 import EvaluationForm from './EvaluationForm'
 import EvaluationCard from './EvaluationCard'
+import {updateStatus} from '../../actions/status'
 
 class DisplayStudent extends PureComponent {
   componentWillMount() {
@@ -35,6 +36,13 @@ class DisplayStudent extends PureComponent {
     history.push(`/batches/${currentBatch}`)
   }
 
+  saveOnClick = () => {
+    const {history} = this.props
+    const currentBatch = this.props.status.currentBatch
+    console.log(currentBatch)
+    history.push(`/batches/${currentBatch}`)
+  }
+
   render() {
     const {authenticated, students, userId, evaluations, currentStudent} = this.props
 
@@ -45,6 +53,14 @@ class DisplayStudent extends PureComponent {
       <h1>{students[currentStudent].studentName} Evaluations</h1>
 
       <p>You are: {userId}</p>
+
+      <Button
+        color="primary"
+        variant="raised"
+        onClick={ () => this.saveOnClick()}
+        className="create-student"
+      >Save and Next
+      </Button>
 
       <Button
         color="primary"
@@ -66,7 +82,7 @@ class DisplayStudent extends PureComponent {
 }
 
 const mapDispatchToProps = {
-  getStudents, getEvaluations, createEvaluation
+  getStudents, getEvaluations, createEvaluation, updateStatus
 }
 
 const mapStateToProps = (state, props) => ({

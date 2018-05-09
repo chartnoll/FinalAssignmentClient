@@ -15,7 +15,7 @@ const TopBar = (props) => {
     <AppBar position="absolute" style={{zIndex:10}}>
       <Toolbar>
         <Typography variant="title" color="inherit" style={{flex: 1}}>
-          Multiplayer Tic Tac Toe
+          Codaisseur Student Evaluator
         </Typography>
         {
           user &&
@@ -31,8 +31,12 @@ const TopBar = (props) => {
           <Button color="inherit" onClick={() => history.push('/signup')}>Sign up</Button>
         }
         {
-          location.pathname.indexOf('games/') > 0 &&
-          <Button color="inherit" onClick={() => history.push('/games')}>All Games</Button>
+          location.pathname.indexOf('batches/') > 0 &&
+          <Button color="inherit" onClick={() => history.push('/batches')}>All Batches</Button>
+        }
+        {
+          location.pathname.indexOf('students/') > 0 &&
+          <Button color="inherit" onClick={() => history.push('/batches')}>All Batches</Button>
         }
         {
           /games$/.test(location.pathname) &&
