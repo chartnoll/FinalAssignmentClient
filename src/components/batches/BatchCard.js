@@ -1,0 +1,37 @@
+import React, {PureComponent} from 'react'
+import Button from 'material-ui/Button'
+import Card, { CardActions, CardContent } from 'material-ui/Card'
+import Typography from 'material-ui/Typography'
+
+export default class LoginForm extends PureComponent {
+
+  render() {
+    const {batch, history} = this.props
+    console.log(batch, "inside the batch card")
+    return (
+      <Card className="batch-card">
+        <CardContent>
+          <Typography color="textSecondary">
+            Batch number&nbsp;
+            {batch.batchNumber}
+          </Typography>
+          <Typography color="textSecondary">
+            Start date&nbsp;
+            {batch.startDate}
+          </Typography>
+          <Typography color="textSecondary">
+            Start date&nbsp;
+            {batch.endDate}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button
+            size="small"
+            onClick={() => history.push(`/batches/${batch.id}`)}
+            >
+              Watch
+            </Button>
+        </CardActions>
+      </Card>)
+  }
+}

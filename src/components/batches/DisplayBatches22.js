@@ -6,11 +6,11 @@ import Button from 'material-ui/Button'
 import Paper from 'material-ui/Paper'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
-import BatchCard from './BatchCard'
 // import './GamesList.css'
 
 class DisplayBatches extends PureComponent {
   componentWillMount() {
+    // console.log("ComponentWillMount has fired", this.props.batches)
     if (this.props.authenticated) {
       if (this.props.batches === null) this.props.getBatches()
     }
@@ -24,6 +24,36 @@ class DisplayBatches extends PureComponent {
     console.log("Creating batch number", newBatch)
     this.props.createBatch(newBatch)
   }
+
+  renderGame = (batch) => {
+    const {history} = this.props
+
+    return (<Card className="game-card">
+      <CardContent>
+        <Typography color="textSecondary">
+          Batch number&nbsp;
+          {batch.batchNumber}
+        </Typography>
+        <Typography color="textSecondary">
+          Start date&nbsp;
+          {batch.startDate}
+        </Typography>
+        <Typography color="textSecondary">
+          Start date&nbsp;
+          {batch.endDate}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button
+          size="small"
+          onClick={() => history.push(`/batches/${batch.id}`)}
+          >
+            Watch
+          </Button>
+      </CardActions>
+    </Card>)
+  }
+
 
   render() {
     const {batches, authenticated, createBatch} = this.props
@@ -46,8 +76,8 @@ class DisplayBatches extends PureComponent {
 
       <div>
         Some stuff
-        {batches.map(batch =>  <BatchCard
-          batch={batch} history={this.props.history}/>)}
+        {batches.map(batch => this.renderGame(batch))}
+
       </div>
     </Paper>)
   }
