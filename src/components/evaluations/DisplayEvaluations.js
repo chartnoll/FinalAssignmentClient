@@ -11,6 +11,12 @@ import EvaluationCard from './EvaluationCard'
 import {updateStatus} from '../../actions/status'
 
 class DisplayStudent extends PureComponent {
+
+  matchStudent = () => {
+    return this.props.students.filter( (student) =>
+      student.id === Number(this.props.currentStudent))[0]
+  }
+
   componentWillMount() {
     if (this.props.authenticated) {
       if (this.props.students === null) this.props.getStudents()
@@ -31,26 +37,22 @@ class DisplayStudent extends PureComponent {
 
   finishedOnClick = () => {
     const {history} = this.props
-    const currentBatch = this.props.status.currentBatch
-    console.log(currentBatch)
-    history.push(`/batches/${currentBatch}`)
+    history.push(`/batches/${this.matchStudent().batchNumber}`)
   }
 
   saveOnClick = () => {
     const {history} = this.props
-    const currentBatch = this.props.status.currentBatch
-    console.log(currentBatch)
-    history.push(`/batches/${currentBatch}`)
+    history.push(`/batches/${this.matchStudent().batchNumber}`)
   }
 
   render() {
     const {authenticated, students, userId, evaluations, currentStudent} = this.props
 
     if (!authenticated) return <Redirect to="/login" />
-    if( evaluations === null || students === null) return null
+    if( evaluations === null || students === null || currentStudent === null) return null
 
     return (<Paper className="outer-paper">
-      <h1>{students[currentStudent].studentName} Evaluations</h1>
+      <h1>{this.matchStudent().studentName} Evaluations</h1>
 
       <p>You are: {userId}</p>
 

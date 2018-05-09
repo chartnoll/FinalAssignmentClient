@@ -10,7 +10,6 @@ import Card, { CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'ma
 import Avatar from 'material-ui/Avatar'
 import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
-import StudentCard from './StudentCard'
 
 class BatchDetails extends PureComponent {
 
@@ -47,6 +46,28 @@ class BatchDetails extends PureComponent {
     this.props.editStudent(studentEdit)
   }
 
+  renderStudent = (student) => {
+    const {history} = this.props
+
+    if(student.batchNumber !== Number(this.props.currentBatch)) return
+
+    return (
+      <Card
+        key={student.id}
+        className="student-card"
+        width="120">
+      <CardHeader
+        title={student.studentName}
+        avatar={<Avatar src={student.studentPicture}/>}
+      />
+      <CardActions>
+        <Button onClick={ () => this.editOnClick(student.id)} label="Edit">Edit</Button>
+        <Button onClick={ () => this.deleteOnClick(student.id)} label="Delete">Delete</Button>
+        <Button onClick={ () => this.evaluateOnClick(student.id)} label="Evaluate">Evaluate</Button>
+    </CardActions>
+    </Card>)
+  }
+
   render() {
     const {batch, authenticated, userId, students} = this.props
 
@@ -73,13 +94,7 @@ class BatchDetails extends PureComponent {
 
       <div>
         Each student
-        {students.map(student => {
-          if(student.batchNumber === Number(this.props.currentBatch)){
-            return <StudentCard student={student}
-              evaluateOnClick={this.evaluateOnClick}
-              deleteOnClick={this.deleteOnClick}
-              editOnClick={this.editOnClick}/>
-          }})}
+        {students.map(student => this.renderStudent(student))}
       </div>
     </Paper>)
   }

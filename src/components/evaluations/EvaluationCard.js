@@ -3,7 +3,7 @@ import Button from 'material-ui/Button'
 import Card, { CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
 
-export default class LoginForm extends PureComponent {
+export default class EvaluationCard extends PureComponent {
 
   editOnClick = (evalId) => {
     console.log("Edit this evaluation", evalId)

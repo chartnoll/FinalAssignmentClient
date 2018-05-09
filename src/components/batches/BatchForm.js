@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react'
 import Button from 'material-ui/Button'
 
-export default class LoginForm extends PureComponent {
+export default class BatchForm extends PureComponent {
 	state = {
 		startDate: new Date().toISOString().slice(0,10)
 	}
