@@ -6,13 +6,14 @@ import {updateStatus} from '../../actions/status'
 import {getStudents, createStudent, deleteStudent, editStudent} from '../../actions/students'
 import {userId} from '../../jwt'
 import Paper from 'material-ui/Paper'
-import Card, { CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import Avatar from 'material-ui/Avatar'
-import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
 import StudentCard from './StudentCard'
+import StudentForm from './StudentForm'
 
 class BatchDetails extends PureComponent {
+  state = {
+    createToggle : false
+  }
 
   componentWillMount() {
     if (this.props.authenticated) {
@@ -21,12 +22,13 @@ class BatchDetails extends PureComponent {
     }
   }
 
-  createOnClick = () => {
-    var studentName = prompt("Please enter students name")
-    var studentPicture = prompt("Please enter the student picture URL")
-    const batchNumber = this.props.batch.batchNumber
-    var newStudent = {batchNumber, studentName, studentPicture}
-    console.log("Creating batch number", batchNumber)
+  toggleCreator = () => {
+    const newValue = this.state.createToggle === true ?
+      false : true
+    this.setState({createToggle: newValue})
+  }
+
+  onSubmit = (newStudent) => {
     this.props.createStudent(newStudent)
   }
 
@@ -41,18 +43,10 @@ class BatchDetails extends PureComponent {
     this.props.getStudents(this.props.batch.batchNumber)
   }
 
-  editOnClick = (studentId) => {
-    var studentName = prompt("Please enter students name")
-    const studentEdit = {studentId, studentName}
-    this.props.editStudent(studentEdit)
-  }
-
   render() {
     const {batch, authenticated, userId, students} = this.props
 
-    if (!authenticated) return (
-			<Redirect to="/login" />
-		)
+    if (!authenticated) return <Redirect to="/login" />
 
     if (batch === null || students === null) return 'Loading...'
     if (!batch) return 'Not found'
@@ -62,23 +56,43 @@ class BatchDetails extends PureComponent {
 
       <p>Start date: {batch.startDate}</p>
       <p>End date: {batch.endDate}</p>
-      <Button
-        color="primary"
-        variant="raised"
-        onClick={ () => this.createOnClick()}
-        className="create-student"
-      >
-        Create a new student
-      </Button>
+
+      { this.state.createToggle &&
+        <div><StudentForm onSubmit={this.onSubmit}/></div>}
+
+      { !this.state.createToggle &&
+        <div>
+          <Button
+            color="primary"
+            variant="raised"
+            onClick={ () => this.toggleCreator()}
+            className="create-student"
+          >
+            Create a new student
+          </Button>
+        </div>
+      }
+
+      { this.state.createToggle &&
+        <div>
+          <Button
+            color="primary"
+            variant="raised"
+            onClick={ () => this.toggleCreator()}
+            className="create-student"
+          >
+            Cancel
+          </Button>
+        </div>
+      }
 
       <div>
-        Each student
         {students.map(student => {
           if(student.batchNumber === Number(this.props.currentBatch)){
-            return <StudentCard student={student}
+            return (<StudentCard student={student}
               evaluateOnClick={this.evaluateOnClick}
               deleteOnClick={this.deleteOnClick}
-              editOnClick={this.editOnClick}/>
+              editStudent={this.props.editStudent}/>)
           }})}
       </div>
     </Paper>)
