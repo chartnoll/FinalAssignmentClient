@@ -12,7 +12,7 @@ import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
 import Chip from 'material-ui/Chip';
 import EvaluationForm from './EvaluationForm'
-import EvaluationCard from './EvaluationCard'
+
 
 class DisplayStudent extends PureComponent {
   componentWillMount() {
@@ -38,14 +38,62 @@ class DisplayStudent extends PureComponent {
     <Redirect to="/login" />
   }
 
-  render() {
-    const {authenticated, students, userId, evaluations, currentStudent} = this.props
+  editOnClick = (evalId) => {
+    console.log("Edit this evaluation", evalId)
+  }
 
-    if (!authenticated) return <Redirect to="/login" />
+  deleteOnClick = (evalId) => {
+    console.log("Delete this evaluation", evalId)
+  }
+
+  renderEvaluation = (evaluation) => {
+    const {history} = this.props
+
+    console.log(evaluation.studentId, this.props.currentStudent, this.props.evaluation)
+
+    if(evaluation.studentId !== Number(this.props.currentStudent)) return
+
+    return (
+      <Card
+        key={evaluation.id}
+        className="evaluation-card"
+        width="120">
+      <CardHeader
+        title={evaluation.color}
+      />
+      <Typography variant="headline" component="h2">
+        Date: {evaluation.date}
+      </Typography>
+      <Typography color="textSecondary">
+        Remark: {evaluation.remark}
+      </Typography>
+      <CardActions>
+        <Button onClick={ () => this.editOnClick(evaluation.id)} label="Edit">Edit</Button>
+        <Button onClick={ () => this.deleteOnClick(evaluation.id)} label="Delete">Delete</Button>
+      </CardActions>
+      </Card>
+    )
+  }
+
+  // onRequestDelete={handleRequestDelete}
+  // <Avatar src={student.studentPicture} />
+
+
+  render() {
+    const {authenticated, students, userId, evaluations} = this.props
+
+    const currentStudent = this.props.match.params.id
+
+    if (!authenticated) return (
+			<Redirect to="/login" />
+		)
+
+    // if( students === null ) return null
+
     if( evaluations === null || students === null) return null
 
     return (<Paper className="outer-paper">
-      <h1>{students[currentStudent].studentName} Evaluations</h1>
+      <h1>{students[this.props.currentStudent].studentName} Evaluations</h1>
 
       <p>You are: {userId}</p>
 
@@ -62,10 +110,7 @@ class DisplayStudent extends PureComponent {
 
 
       Each Evaluation
-      {evaluations.map((evaluation) => {
-        if(evaluation.studentId === Number(this.props.currentStudent)){
-          return <EvaluationCard evaluation={evaluation}/>
-      }})}
+      {evaluations.map((evaluation) => this.renderEvaluation(evaluation))}
     </Paper>)
   }
 }
