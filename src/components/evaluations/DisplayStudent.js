@@ -1,22 +1,16 @@
 import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {getBatches, createBatch} from '../../actions/batches'
 import {getEvaluations, createEvaluation} from '../../actions/evaluations'
 import {getStudents, createStudent, deleteStudent, editStudent} from '../../actions/students'
 import {userId} from '../../jwt'
 import Paper from 'material-ui/Paper'
-import Card, { CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import Avatar from 'material-ui/Avatar'
-import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
-import Chip from 'material-ui/Chip';
 import EvaluationForm from './EvaluationForm'
 import EvaluationCard from './EvaluationCard'
 
 class DisplayStudent extends PureComponent {
   componentWillMount() {
-    console.log("ComponentWillMount has fired", this.props.status.studentId, this.props.status.batchNumber)
     if (this.props.authenticated) {
       if (this.props.students === null) this.props.getStudents()
       if (this.props.evaluations === null) this.props.getEvaluations()
@@ -35,7 +29,10 @@ class DisplayStudent extends PureComponent {
   }
 
   finishedOnClick = () => {
-    <Redirect to="/login" />
+    const {history} = this.props
+    const toGoTo = this.props.students[this.props.currentStudent].batchNumber
+    console.log("trying to return to batches", toGoTo)
+    history.push(`/batches/${toGoTo}`)
   }
 
   render() {
@@ -54,16 +51,14 @@ class DisplayStudent extends PureComponent {
         variant="raised"
         onClick={ () => this.finishedOnClick()}
         className="create-student"
-      >
-        Finished
+      >Finished
       </Button>
 
       <EvaluationForm onSubmit={this.submitNewEvaluation}/>
 
-
       Each Evaluation
       {evaluations.map((evaluation) => {
-        if(evaluation.studentId === Number(this.props.currentStudent)){
+        if(evaluation.studentId === Number(currentStudent)){
           return <EvaluationCard evaluation={evaluation}/>
       }})}
     </Paper>)
@@ -77,7 +72,6 @@ const mapDispatchToProps = {
 const mapStateToProps = (state, props) => ({
   authenticated: state.currentUser !== null,
   userId: state.currentUser && userId(state.currentUser.jwt),
-  // firstStudent: state.students && state.batches[props.match.params.id],
   students: state.students === null ?
     null : Object.values(state.students),
   evaluations: state.evaluations === null ?
