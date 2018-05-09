@@ -7,6 +7,7 @@ import Paper from 'material-ui/Paper'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
 import BatchCard from './BatchCard'
+import BatchForm from './BatchForm'
 // import './GamesList.css'
 
 class DisplayBatches extends PureComponent {
@@ -16,14 +17,14 @@ class DisplayBatches extends PureComponent {
     }
   }
 
-  createNewBatch = () => {
-    var newBatchNumber = prompt("Please enter the new batch number")
-    var startDate = prompt("Please enter the new batch start date")
-    var endDate = prompt("Please enter the new batch end date")
-    var newBatch = {newBatchNumber, startDate, endDate}
-    console.log("Creating batch number", newBatch)
-    this.props.createBatch(newBatch)
-  }
+  // createNewBatch = () => {
+  //   var newBatchNumber = prompt("Please enter the new batch number")
+  //   var startDate = prompt("Please enter the new batch start date")
+  //   var endDate = prompt("Please enter the new batch end date")
+  //   var newBatch = {newBatchNumber, startDate, endDate}
+  //   console.log("Creating batch number", newBatch)
+  //   this.props.createBatch(newBatch)
+  // }
 
   render() {
     const {batches, authenticated, createBatch} = this.props
@@ -35,14 +36,7 @@ class DisplayBatches extends PureComponent {
     if( batches === null) return null
 
     return (<Paper className="outer-paper">
-      <Button
-        color="primary"
-        variant="raised"
-        onClick={this.createNewBatch}
-        className="create-game"
-      >
-        Create a new batch
-      </Button>
+      <BatchForm onSubmit={createBatch}/>
 
       <div>
         Some stuff

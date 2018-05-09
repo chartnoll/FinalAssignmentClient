@@ -7,7 +7,6 @@ export default class LoginForm extends PureComponent {
 
   render() {
     const {batch, history} = this.props
-    console.log(batch, "inside the batch card")
     return (
       <Card className="batch-card">
         <CardContent>
