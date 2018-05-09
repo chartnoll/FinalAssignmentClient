@@ -30,9 +30,9 @@ class DisplayStudent extends PureComponent {
 
   finishedOnClick = () => {
     const {history} = this.props
-    const toGoTo = this.props.students[this.props.currentStudent].batchNumber
-    console.log("trying to return to batches", toGoTo)
-    history.push(`/batches/${toGoTo}`)
+    const currentBatch = this.props.status.currentBatch
+    console.log(currentBatch)
+    history.push(`/batches/${currentBatch}`)
   }
 
   render() {
@@ -77,7 +77,7 @@ const mapStateToProps = (state, props) => ({
   evaluations: state.evaluations === null ?
     null : Object.values(state.evaluations),
   currentStudent: props.match.params.id,
-  status: state.status !== null
+  status: state.status
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DisplayStudent)
