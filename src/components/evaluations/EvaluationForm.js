@@ -7,6 +7,7 @@ export default class EvaluationForm extends PureComponent {
   }
 
 	handleSubmit = (e) => {
+		// e.preventDefault()
 		this.props.onSubmit(this.state)
 	}
 

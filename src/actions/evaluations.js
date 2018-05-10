@@ -18,8 +18,8 @@ const addEvaluation = evaluation => ({
 })
 
 
-export const getEvaluations = (studentId) => (dispatch, getState) => {
-  console.log("getEvaluations action has been fired! for student", studentId)
+export const getEvaluations = () => (dispatch, getState) => {
+  console.log("getEvaluations action has been fired! for student")
   const state = getState()
   if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
@@ -35,21 +35,21 @@ export const getEvaluations = (studentId) => (dispatch, getState) => {
     })
     .catch(err => console.error(err))
 }
-//
-// export const createStudent = (newStudent) => (dispatch, getState) => {
-//   console.log("Inside the createStudent action", newStudent)
-//   const state = getState()
-//   const jwt = state.currentUser.jwt
-//
-//   if (isExpired(jwt)) return dispatch(logout())
-//
-//   request
-//     .post(`${baseUrl}/students`)
-//     .set('Authorization', `Bearer ${jwt}`)
-//     .send(newStudent)
-//     .then(result => dispatch(addStudent(result.body)))
-//     .catch(err => console.error(err))
-// }
+
+export const createEvaluation = (newEval) => (dispatch, getState) => {
+  console.log("Inside the createEvaluation action", newEval)
+  const state = getState()
+  const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
+
+  request
+    .post(`${baseUrl}/evaluations`)
+    .set('Authorization', `Bearer ${jwt}`)
+    .send(newEval)
+    .then(result => dispatch(addEvaluation(result.body)))
+    .catch(err => console.error(err))
+}
 //
 // export const editStudent = (studentEdit) => (dispatch, getState) => {
 //   console.log("Inside the editStudent action", studentEdit.studentId)

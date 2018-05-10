@@ -6,6 +6,12 @@ import {isExpired} from '../jwt'
 export const ADD_STUDENT = 'ADD_STUDENT'
 export const UPDATE_STUDENT = 'UPDATE_STUDENT'
 export const UPDATE_STUDENTS = 'UPDATE_STUDENTS'
+export const ADD_RANDOMSTUDENT = 'ADD_RANDOMSTUDENT'
+
+const addRandomStudent = student => ({
+  type: ADD_RANDOMSTUDENT,
+  payload: student
+})
 
 const updateStudents = students => ({
   type: UPDATE_STUDENTS,
@@ -18,8 +24,8 @@ const addStudent = student => ({
 })
 
 
-export const getStudents = (batchId) => (dispatch, getState) => {
-  console.log("getStudents action has been fired! for batch", batchId)
+export const getStudents = () => (dispatch, getState) => {
+  console.log("getStudents action has been fired! for batch")
   const state = getState()
   if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
@@ -27,11 +33,29 @@ export const getStudents = (batchId) => (dispatch, getState) => {
   if (isExpired(jwt)) return dispatch(logout())
 
   request
-    .get(`${baseUrl}/batchStudents/${batchId}`)
+    .get(`${baseUrl}/students`)
     .set('Authorization', `Bearer ${jwt}`)
     .then(result => {
       console.log("THis was returned!",result.body)
       dispatch(updateStudents(result.body))
+    })
+    .catch(err => console.error(err))
+}
+
+export const getRandomStudent = (batchId) => (dispatch, getState) => {
+  console.log("getRandomStudent has been fired")
+  const state = getState()
+  if (!state.currentUser) return null
+  const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
+
+  request
+    .get(`${baseUrl}/randomstudent/${batchId}`)
+    .set('Authorization', `Bearer ${jwt}`)
+    .then(result => {
+      console.log("THis was returned!",result.body)
+      dispatch(addRandomStudent(result.body))
     })
     .catch(err => console.error(err))
 }

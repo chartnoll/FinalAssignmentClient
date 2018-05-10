@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import LoginPage from './components/login/LoginPage'
 import SignupPage from './components/signup/SignupPage'
-import GamesList from './components/games/GamesList'
-import GameDetails from './components/games/GameDetails'
 import LogoutPage from './components/logout/LogoutPage'
 import DisplayBatches from './components/batches/DisplayBatches'
-import BatchDetails from './components/batches/BatchDetails'
-import DisplayStudent from './components/evaluations/DisplayStudent'
+import DisplayStudents from './components/students/DisplayStudents'
+import DisplayEvaluations from './components/evaluations/DisplayEvaluations'
+import RandomStudent from './components/students/RandomStudent'
 import './App.css'
 import TopBar from './components/layout/TopBar'
 
@@ -28,10 +27,9 @@ class App extends Component {
             <Route exact path="/logout" component={LogoutPage} />
             <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/batches" component={DisplayBatches} />
-            <Route exact path="/batches/:id" component={BatchDetails} />
-            <Route exact path="/students/:id" component={DisplayStudent} />
-            <Route exact path="/games" component={GamesList} />
-            <Route exact path="/games/:id" component={GameDetails} />
+            <Route exact path="/batches/:id" component={DisplayStudents} />
+            <Route exact path="/students/:id" component={DisplayEvaluations} />
+            <Route exact path="/randomstudent/:id" component={RandomStudent} />
             <Route exact path="/" render={ () => <Redirect to="/batches" /> } />
           </main>
         </div>

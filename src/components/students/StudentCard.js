@@ -4,6 +4,7 @@ import Card, { CardActions, CardHeader, CardTitle, CardText, CardMedia} from 'ma
 import Typography from 'material-ui/Typography'
 import Avatar from 'material-ui/Avatar'
 import StudentEditor from './StudentEditor'
+import EvaluationChip from './EvaluationChip'
 
 export default class LoginForm extends PureComponent {
   state = {
@@ -28,7 +29,7 @@ export default class LoginForm extends PureComponent {
   }
 
   render() {
-    const {student} = this.props
+    const {student, evaluations} = this.props
     return (
       <Card
         key={student.id}
@@ -51,6 +52,8 @@ export default class LoginForm extends PureComponent {
         <StudentEditor
           currentStudentID={student.id}
           editOnClick={this.editOnClick}/>}
+      { evaluations.map((evaluation) => {if(evaluation.id === student.id)
+        return <EvaluationChip evaluation={evaluation}/>} )}
     </Typography>
     </Card>
     )
