@@ -10,6 +10,7 @@ import Paper from 'material-ui/Paper'
 import Button from 'material-ui/Button'
 import StudentCard from './StudentCard'
 import StudentForm from './StudentForm'
+import Grid from 'material-ui/Grid';
 
 class BatchDetails extends PureComponent {
   state = {
@@ -98,7 +99,7 @@ class BatchDetails extends PureComponent {
             color="primary"
             variant="raised"
             onClick={ () => this.toggleCreator()}
-            className="create-student"
+            className="cancel-student"
           >
             Cancel
           </Button>
@@ -106,14 +107,17 @@ class BatchDetails extends PureComponent {
       }
 
       <div>
-        {students.map(student => {
-          if(student.batchNumber === Number(this.props.currentBatch)){
-            return (<StudentCard student={student}
-              evaluateOnClick={this.evaluateOnClick}
-              deleteOnClick={this.deleteOnClick}
-              editStudent={this.props.editStudent}
-              evaluations={evaluations}/>)
-          }})}
+      <Grid container spacing={32}>
+          {students.map((student, index) => {
+            if(student.batchNumber === Number(this.props.currentBatch)){
+              return (<StudentCard student={student}
+                evaluateOnClick={this.evaluateOnClick}
+                deleteOnClick={this.deleteOnClick}
+                editStudent={this.props.editStudent}
+                evaluations={evaluations}
+                index={index}/>)
+            }})}
+      </Grid>
       </div>
     </Paper>)
   }

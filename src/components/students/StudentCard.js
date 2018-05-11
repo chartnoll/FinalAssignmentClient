@@ -5,6 +5,7 @@ import Typography from 'material-ui/Typography'
 import Avatar from 'material-ui/Avatar'
 import StudentEditor from './StudentEditor'
 import EvaluationChip from './EvaluationChip'
+import Grid from 'material-ui/Grid';
 
 export default class LoginForm extends PureComponent {
   state = {
@@ -29,8 +30,9 @@ export default class LoginForm extends PureComponent {
   }
 
   render() {
-    const {student, evaluations} = this.props
+    const {student, evaluations, index} = this.props
     return (
+      <Grid item xs={16} sm={6} key={index}>
       <Card
         key={student.id}
         className="student-card"
@@ -56,6 +58,7 @@ export default class LoginForm extends PureComponent {
         return <EvaluationChip evaluation={evaluation}/>} )}
     </Typography>
     </Card>
+    </Grid>
     )
   }
 }

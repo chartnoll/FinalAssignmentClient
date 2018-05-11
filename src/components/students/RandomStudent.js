@@ -10,7 +10,7 @@ class RandomStudent extends PureComponent {
 
   componentWillMount() {
     if (this.props.authenticated) {
-      // if (this.props.randomStudent === null) this.props.getRandomStudent(this.props.match.params.id)
+      if (this.props.randomStudent === null) this.props.getRandomStudent(this.props.match.params.id)
     }
   }
 
@@ -30,7 +30,7 @@ class RandomStudent extends PureComponent {
 
     return (
       <div>
-        {randomStudent.name} <br/>
+        {randomStudent.studentName} <br/>
         <img src={randomStudent.studentPicture} alt="" height="120" />
         <Button onClick={this.onClick} label="Evaluate">Evaluate</Button>
       </div>
