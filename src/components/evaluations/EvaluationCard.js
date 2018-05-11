@@ -2,8 +2,17 @@ import React, {PureComponent} from 'react'
 import Button from 'material-ui/Button'
 import Card, { CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
+import red from '../../images/red.png'
+import amber from '../../images/amber.png'
+import green from '../../images/green.png'
 
 export default class EvaluationCard extends PureComponent {
+
+  renderRating = (color) => {
+    if( color === "red") return <img src={red} alt="" height="40" />
+    if( color === "amber") return <img src={amber} alt="" height="40" />
+    return <img src={green} alt="" height="40" />
+  }
 
   editOnClick = (evalId) => {
     console.log("Edit this evaluation", evalId)
@@ -21,12 +30,12 @@ export default class EvaluationCard extends PureComponent {
         className="evaluation-card"
         width="120">
       <CardHeader
-        title={evaluation.color}
+        title={evaluation.date}
       />
-      <Typography variant="headline" component="h2">
-        Date: {evaluation.date}
-      </Typography>
-      <Typography color="textSecondary">
+      <CardMedia>
+        {this.renderRating(evaluation.color)}
+      </CardMedia>
+      <Typography color="textPrimary">
         Remark: {evaluation.remark}
       </Typography>
       <CardActions>

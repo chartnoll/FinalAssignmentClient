@@ -51,6 +51,8 @@ class DisplayStudent extends PureComponent {
     if (!authenticated) return <Redirect to="/login" />
     if( evaluations === null || students === null || currentStudent === null) return null
 
+    console.log(evaluations[2].studentId, currentStudent)
+
     return (<Paper className="outer-paper">
       <h1>{this.matchStudent().studentName} Evaluations</h1>
 
@@ -74,7 +76,6 @@ class DisplayStudent extends PureComponent {
 
       <EvaluationForm onSubmit={this.submitNewEvaluation}/>
 
-      Each Evaluation
       {evaluations.map((evaluation) => {
         if(evaluation.studentId === Number(currentStudent)){
           return <EvaluationCard evaluation={evaluation}/>

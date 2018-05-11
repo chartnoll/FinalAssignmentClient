@@ -14,9 +14,13 @@ class RandomStudent extends PureComponent {
     }
   }
 
-  onClick = () => {
+  returnOnClick = () => {
     const {history, currentBatch} = this.props
     history.push(`/batches/${currentBatch}`)
+  }
+
+  nextOnClick = () => {
+    this.reset()
   }
 
   render() {
@@ -31,8 +35,9 @@ class RandomStudent extends PureComponent {
     return (
       <div>
         {randomStudent.studentName} <br/>
-        <img src={randomStudent.studentPicture} alt="" height="120" />
-        <Button onClick={this.onClick} label="Evaluate">Evaluate</Button>
+        <img src={randomStudent.studentPicture} alt="" height="120" /><br/>
+        <Button onClick={this.returnOnClick} label="Return">Return</Button><br/>
+        <Button onClick={this.nextOnClick} label="Next">Next</Button>
       </div>
     )
   }
