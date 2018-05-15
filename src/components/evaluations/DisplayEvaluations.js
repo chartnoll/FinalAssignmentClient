@@ -24,16 +24,16 @@ class DisplayStudent extends PureComponent {
     }
   }
 
-  submitNewEvaluation = (data) =>{
-    const payload = {
-      studentId: this.props.currentStudent,
-      teacherId: this.props.userId,
-      color: data.color,
-      remark: data.remark,
-      date: data.date
-    }
-    this.props.createEvaluation(payload)
-  }
+  // submitNewEvaluation = (data) =>{
+  //   const payload = {
+  //     studentId: this.props.currentStudent,
+  //     teacherId: this.props.userId,
+  //     color: data.color,
+  //     remark: data.remark,
+  //     date: data.date
+  //   }
+  //   this.props.createEvaluation(payload)
+  // }
 
   finishedOnClick = () => {
     const {history} = this.props
@@ -73,8 +73,12 @@ class DisplayStudent extends PureComponent {
         className="create-student"
       >Finished
       </Button>
+      <br/>
 
-      <EvaluationForm onSubmit={this.submitNewEvaluation}/>
+      <EvaluationForm
+      currentStudent={currentStudent}
+      userId={this.props.userId}/>
+      <br/>
 
       {evaluations.map((evaluation) => {
         if(evaluation.studentId === Number(currentStudent)){

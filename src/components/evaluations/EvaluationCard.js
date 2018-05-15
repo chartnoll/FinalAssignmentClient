@@ -5,13 +5,14 @@ import Typography from 'material-ui/Typography'
 import red from '../../images/red.png'
 import amber from '../../images/amber.png'
 import green from '../../images/green.png'
+import Avatar from 'material-ui/Avatar'
 
 export default class EvaluationCard extends PureComponent {
 
   renderRating = (color) => {
-    if( color === "red") return <img src={red} alt="" height="40" />
-    if( color === "amber") return <img src={amber} alt="" height="40" />
-    return <img src={green} alt="" height="40" />
+    if( color === "red") return red
+    if( color === "amber") return amber
+    return green
   }
 
   editOnClick = (evalId) => {
@@ -29,12 +30,10 @@ export default class EvaluationCard extends PureComponent {
         key={evaluation.id}
         className="evaluation-card"
         width="120">
-      <CardHeader
-        title={evaluation.date}
-      />
-      <CardMedia>
-        {this.renderRating(evaluation.color)}
-      </CardMedia>
+        <CardHeader
+          title={evaluation.date}
+          avatar={<Avatar src={this.renderRating(evaluation.color)}/>}
+        />
       <Typography color="textPrimary">
         Remark: {evaluation.remark}
       </Typography>

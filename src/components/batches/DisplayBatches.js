@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {getBatches, createBatch} from '../../actions/batches'
+import {getBatches} from '../../actions/batches'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import Button from 'material-ui/Button'
@@ -8,6 +8,7 @@ import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
 import BatchCard from './BatchCard'
 import BatchForm from './BatchForm'
+import Grid from 'material-ui/Grid';
 
 class DisplayBatches extends PureComponent {
   componentWillMount() {
@@ -26,12 +27,14 @@ class DisplayBatches extends PureComponent {
     if( batches === null) return null
 
     return (<Paper className="outer-paper">
-      <BatchForm onSubmit={createBatch}/>
+      <BatchForm />
+      <br/>
 
       <div>
-        Some stuff
-        {batches.map(batch =>  <BatchCard
-          batch={batch} history={this.props.history}/>)}
+        <Grid container spacing={32}>
+          {batches.map(batch =>  <BatchCard
+            batch={batch} history={this.props.history}/>)}
+        </Grid>
       </div>
     </Paper>)
   }
@@ -44,4 +47,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getBatches, createBatch})(DisplayBatches)
+export default connect(mapStateToProps, {getBatches})(DisplayBatches)

@@ -39,7 +39,11 @@ const TopBar = (props) => {
           <Button color="inherit" onClick={() => history.push('/batches')}>All Batches</Button>
         }
         {
-          /games$/.test(location.pathname) &&
+          /batches$/.test(location.pathname) &&
+          <Button color="inherit" onClick={() => history.push('/logout')}>Log out</Button>
+        }
+        {
+          /students$/.test(location.pathname) &&
           <Button color="inherit" onClick={() => history.push('/logout')}>Log out</Button>
         }
       </Toolbar>

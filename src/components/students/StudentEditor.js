@@ -1,13 +1,23 @@
 import React, {PureComponent} from 'react'
 import Button from 'material-ui/Button'
+import {editStudent} from '../../actions/students'
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 
-export default class StudentEditor extends PureComponent {
+class StudentEditor extends PureComponent {
 	state = {}
 
-	handleSubmit = (e) => {
-    e.preventDefault()
-		this.props.editOnClick(this.state)
-    this.setState({})
+	editOnClick = (e) => {
+		const updates = this.state
+		e.preventDefault()
+		let payload = {}
+		if( Object.keys(updates).includes("studentName") ) payload.studentName = updates.studentName
+		if( Object.keys(updates).includes("studentPicture") ) payload.studentPicture = updates.studentPicture
+		if( Object.keys(updates).includes("batchNumber") ) payload.batchNumber = updates.batchNumber
+		payload.studentId = this.props.currentStudentID
+		this.props.toggleEditor()
+		this.props.editStudent(payload)
+		this.setState({})
 	}
 
 	handleChange = (event) => {
@@ -20,7 +30,7 @@ export default class StudentEditor extends PureComponent {
 
 	render() {
 		return (
-			<form onSubmit={this.handleSubmit}>
+			<form onSubmit={this.editOnClick}>
 				<div>
 					<label htmlFor="studentName">Name</label>
 					<input type="text" name="studentName" id="studentName" value={
@@ -47,3 +57,5 @@ export default class StudentEditor extends PureComponent {
 		)
 	}
 }
+
+export default connect (null, {editStudent})(StudentEditor)

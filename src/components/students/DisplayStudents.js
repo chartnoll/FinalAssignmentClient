@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {getBatches, createBatch} from '../../actions/batches'
+import {getBatches} from '../../actions/batches'
 import {getEvaluations} from '../../actions/evaluations'
-import {updateStatus} from '../../actions/status'
-import {getStudents, createStudent, deleteStudent, editStudent, getRandomStudent} from '../../actions/students'
+import {getStudents, editStudent, getRandomStudent} from '../../actions/students'
 import {userId} from '../../jwt'
 import Paper from 'material-ui/Paper'
 import Button from 'material-ui/Button'
@@ -37,21 +36,6 @@ class BatchDetails extends PureComponent {
     this.setState({createToggle: newValue})
   }
 
-  onSubmit = (newStudent) => {
-    this.props.createStudent(newStudent)
-  }
-
-  evaluateOnClick = (studentId) => {
-    const {history, currentBatch} = this.props
-    this.props.updateStatus({studentId, currentBatch})
-    history.push(`/students/${studentId}`)
-  }
-
-  deleteOnClick = (studentId) => {
-    this.props.deleteStudent(studentId, this.props.students)
-    this.props.getStudents(this.props.batch.batchNumber)
-  }
-
   render() {
     const {batch, authenticated, userId, students, evaluations} = this.props
 
@@ -66,6 +50,8 @@ class BatchDetails extends PureComponent {
       <p>Start date: {batch.startDate}</p>
       <p>End date: {batch.endDate}</p>
 
+      <br/>
+
       <div>
       <Button
         color="primary"
@@ -77,8 +63,12 @@ class BatchDetails extends PureComponent {
       </Button>
       </div>
 
+      <br/>
+
       { this.state.createToggle &&
-        <div><StudentForm onSubmit={this.onSubmit}/></div>}
+        <div><StudentForm/></div>}
+
+      <br/>
 
       { !this.state.createToggle &&
         <div>
@@ -92,6 +82,8 @@ class BatchDetails extends PureComponent {
           </Button>
         </div>
       }
+
+      <br/>
 
       { this.state.createToggle &&
         <div>
@@ -111,10 +103,7 @@ class BatchDetails extends PureComponent {
           {students.map((student, index) => {
             if(student.batchNumber === Number(this.props.currentBatch)){
               return (<StudentCard student={student}
-                evaluateOnClick={this.evaluateOnClick}
-                deleteOnClick={this.deleteOnClick}
-                editStudent={this.props.editStudent}
-                evaluations={evaluations}
+                currentBatch = {this.props.currentBatch}
                 index={index}/>)
             }})}
       </Grid>
@@ -135,7 +124,7 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = {
-  getBatches, createBatch, getStudents, createStudent, deleteStudent, editStudent, updateStatus, getEvaluations, getRandomStudent
+  getBatches, getStudents, editStudent, getEvaluations, getRandomStudent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BatchDetails)

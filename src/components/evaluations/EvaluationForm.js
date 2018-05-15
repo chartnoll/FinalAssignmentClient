@@ -1,14 +1,24 @@
 import React, {PureComponent} from 'react'
 import Button from 'material-ui/Button'
+import {createEvaluation} from '../../actions/evaluations'
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 
-export default class EvaluationForm extends PureComponent {
+class EvaluationForm extends PureComponent {
 	state = {
     date: new Date().toISOString().slice(0,10)
   }
 
 	handleSubmit = (e) => {
 		// e.preventDefault()
-		this.props.onSubmit(this.state)
+		const payload = {
+      studentId: this.props.currentStudent,
+      teacherId: this.props.userId,
+      color: this.state.color,
+      remark: this.state.remark,
+      date: this.state.date
+    }
+    this.props.createEvaluation(payload)
 	}
 
 	handleChange = (event) => {
@@ -32,21 +42,23 @@ export default class EvaluationForm extends PureComponent {
         <Button onClick={ () => this.setColor("amber")} label="amber">Amber</Button>
         <Button onClick={ () => this.setColor("red")} label="red">Red</Button>
 				<div>
+				<br/>
 					<label htmlFor="date">Date</label>
 					<input type="date" name="date" id="date" value={
 						this.state.date
 					} onChange={ this.handleChange } />
 				</div>
-
 				<div>
 					<label htmlFor="remark">Remark</label>
 					<input type="text" name="remark" id="remark" value={
 						this.state.remark || ''
 					} onChange={ this.handleChange } />
 				</div>
-
+<br/>
         <button type="submit">Submit Evaluation</button>
 			</form>
 		)
 	}
 }
+
+export default connect(null, {createEvaluation})(EvaluationForm)

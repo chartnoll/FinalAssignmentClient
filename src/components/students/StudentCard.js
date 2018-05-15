@@ -2,31 +2,35 @@ import React, {PureComponent} from 'react'
 import Button from 'material-ui/Button'
 import Card, { CardActions, CardHeader, CardTitle, CardText, CardMedia} from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
+import {updateStatus} from '../../actions/status'
+import {getStudents, deleteStudent} from '../../actions/students'
 import Avatar from 'material-ui/Avatar'
 import StudentEditor from './StudentEditor'
 import EvaluationChip from './EvaluationChip'
-import Grid from 'material-ui/Grid';
+import Grid from 'material-ui/Grid'
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 
-export default class LoginForm extends PureComponent {
+class StudentCard extends PureComponent {
   state = {
     editToggle : false
-  }
-
-  editOnClick = (updates) => {
-    let payload = {}
-    if( Object.keys(updates).includes("studentName") ) payload.studentName = updates.studentName
-    if( Object.keys(updates).includes("studentPicture") ) payload.studentPicture = updates.studentPicture
-    if( Object.keys(updates).includes("batchNumber") ) payload.batchNumber = updates.batchNumber
-    payload.studentId = this.props.student.id
-    this.toggleEditor()
-    console.log("Inside the displaystudents", payload)
-    this.props.editStudent(payload)
   }
 
   toggleEditor = () => {
     const newValue = this.state.editToggle === true ?
       false : true
     this.setState({editToggle: newValue})
+  }
+
+  evaluateOnClick = (studentId) => {
+    const {history, currentBatch} = this.props
+    this.props.updateStatus({studentId, currentBatch})
+    history.push(`/students/${studentId}`)
+  }
+
+  deleteOnClick = (studentId) => {
+    this.props.deleteStudent(studentId, this.props.students)
+    this.props.getStudents(this.props.currentBatch)
   }
 
   render() {
@@ -45,15 +49,15 @@ export default class LoginForm extends PureComponent {
         <img src={student.studentPicture} alt="" height="120" />
       </CardMedia>
       <CardActions>
-        <Button onClick={ () => this.props.evaluateOnClick(student.id)} label="Evaluate">Evaluate</Button>
+        <Button onClick={ () => this.evaluateOnClick(student.id)} label="Evaluate">Evaluate</Button>
         <Button onClick={ () => this.toggleEditor()} label="Edit">Edit</Button>
-        <Button onClick={ () => this.props.deleteOnClick(student.id)} label="Delete">Delete</Button>
+        <Button onClick={ () => this.deleteOnClick(student.id)} label="Delete">Delete</Button>
     </CardActions>
     <Typography variant="headline" component="h2">
       { this.state.editToggle === true &&
         <StudentEditor
           currentStudentID={student.id}
-          editOnClick={this.editOnClick}/>}
+          toggleEditor={this.toggleEditor}/>}
       { evaluations.map((evaluation) => {if(evaluation.id === student.id)
         return <EvaluationChip evaluation={evaluation}/>} )}
     </Typography>
@@ -62,3 +66,14 @@ export default class LoginForm extends PureComponent {
     )
   }
 }
+
+const mapStateToProps = (state, props) => ({
+  evaluations: state.evaluations === null ?
+    null : Object.values(state.evaluations)
+})
+
+const mapDispatchToProps = {
+  getStudents, deleteStudent, updateStatus
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentCard)

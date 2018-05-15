@@ -1,13 +1,16 @@
 import React, {PureComponent} from 'react'
 import Button from 'material-ui/Button'
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
+import {createBatch} from '../../actions/batches'
 
-export default class BatchForm extends PureComponent {
+class BatchForm extends PureComponent {
 	state = {
 		startDate: new Date().toISOString().slice(0,10)
 	}
 
 	handleSubmit = (e) => {
-		this.props.onSubmit(this.state)
+		this.props.createBatch(this.state)
 	}
 
 	handleChange = (event) => {
@@ -41,9 +44,12 @@ export default class BatchForm extends PureComponent {
 						this.state.endDate || ''
 					} onChange={ this.handleChange } />
 				</div>
+				<br/>
 
         <button type="submit">Save Batch</button>
 			</form>
 		)
 	}
 }
+
+export default connect(null, {createBatch})(BatchForm)

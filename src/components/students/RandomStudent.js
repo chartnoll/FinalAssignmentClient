@@ -36,8 +36,8 @@ class RandomStudent extends PureComponent {
       <div>
         {randomStudent.studentName} <br/>
         <img src={randomStudent.studentPicture} alt="" height="120" /><br/>
-        <Button onClick={this.returnOnClick} label="Return">Return</Button><br/>
-        <Button onClick={this.nextOnClick} label="Next">Next</Button>
+        <Button onClick={ () => this.returnOnClick} label="Return">Return</Button><br/>
+        <Button onClick={ () => this.nextOnClick} label="Next">Next</Button>
       </div>
     )
   }
