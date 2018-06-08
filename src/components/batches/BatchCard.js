@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react'
 import Button from 'material-ui/Button'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
-import Grid from 'material-ui/Grid';
 
 export default class BatchCard extends PureComponent {
 
@@ -15,12 +14,12 @@ export default class BatchCard extends PureComponent {
             <b>Batch number&nbsp;
             {batch.batchNumber}</b>
           </Typography>
-          <Typography color="textSecondary">
+          <Typography>
             Start date&nbsp;
             {batch.startDate}
           </Typography>
-          <Typography color="textSecondary">
-            Start date&nbsp;
+          <Typography>
+            End date&nbsp;
             {batch.endDate}
           </Typography>
         </CardContent>

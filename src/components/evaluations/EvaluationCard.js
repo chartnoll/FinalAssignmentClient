@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react'
 import Button from 'material-ui/Button'
-import Card, { CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import Card, { CardActions, CardHeader} from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
 import red from '../../images/red.png'
 import amber from '../../images/amber.png'
@@ -28,7 +28,6 @@ export default class EvaluationCard extends PureComponent {
     return (
       <Card
         key={evaluation.id}
-        className="evaluation-card"
         width="120">
         <CardHeader
           title={evaluation.date}

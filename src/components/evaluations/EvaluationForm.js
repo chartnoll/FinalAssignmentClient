@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react'
 import Button from 'material-ui/Button'
 import {createEvaluation} from '../../actions/evaluations'
 import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
 
 class EvaluationForm extends PureComponent {
 	state = {
@@ -10,10 +9,10 @@ class EvaluationForm extends PureComponent {
   }
 
 	handleSubmit = (e) => {
-		// e.preventDefault()
+		e.preventDefault()
 		const payload = {
-      studentId: this.props.currentStudent,
-      teacherId: this.props.userId,
+      studentId: Number(this.props.currentStudent),
+      teacherId: Number(this.props.userId),
       color: this.state.color,
       remark: this.state.remark,
       date: this.state.date

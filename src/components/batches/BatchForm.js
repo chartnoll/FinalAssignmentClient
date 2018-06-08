@@ -1,7 +1,5 @@
 import React, {PureComponent} from 'react'
-import Button from 'material-ui/Button'
 import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
 import {createBatch} from '../../actions/batches'
 
 class BatchForm extends PureComponent {
@@ -10,6 +8,7 @@ class BatchForm extends PureComponent {
 	}
 
 	handleSubmit = (e) => {
+		e.preventDefault()
 		this.props.createBatch(this.state)
 	}
 

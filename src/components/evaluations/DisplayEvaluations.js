@@ -2,13 +2,12 @@ import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {getEvaluations, createEvaluation} from '../../actions/evaluations'
-import {getStudents, createStudent, deleteStudent, editStudent} from '../../actions/students'
+import {getStudents} from '../../actions/students'
 import {userId} from '../../jwt'
 import Paper from 'material-ui/Paper'
 import Button from 'material-ui/Button'
 import EvaluationForm from './EvaluationForm'
 import EvaluationCard from './EvaluationCard'
-import {updateStatus} from '../../actions/status'
 
 class DisplayStudent extends PureComponent {
 
@@ -23,17 +22,6 @@ class DisplayStudent extends PureComponent {
       if (this.props.evaluations === null) this.props.getEvaluations()
     }
   }
-
-  // submitNewEvaluation = (data) =>{
-  //   const payload = {
-  //     studentId: this.props.currentStudent,
-  //     teacherId: this.props.userId,
-  //     color: data.color,
-  //     remark: data.remark,
-  //     date: data.date
-  //   }
-  //   this.props.createEvaluation(payload)
-  // }
 
   finishedOnClick = () => {
     const {history} = this.props
@@ -50,8 +38,6 @@ class DisplayStudent extends PureComponent {
 
     if (!authenticated) return <Redirect to="/login" />
     if( evaluations === null || students === null || currentStudent === null) return null
-
-    console.log(evaluations[2].studentId, currentStudent)
 
     return (<Paper className="outer-paper">
       <h1>{this.matchStudent().studentName} Evaluations</h1>
@@ -80,16 +66,14 @@ class DisplayStudent extends PureComponent {
       userId={this.props.userId}/>
       <br/>
 
-      {evaluations.map((evaluation) => {
-        if(evaluation.studentId === Number(currentStudent)){
-          return <EvaluationCard evaluation={evaluation}/>
-      }})}
+      {evaluations.map((evaluation) => {if(Number(evaluation.studentId) === Number(currentStudent))
+          return <EvaluationCard evaluation={evaluation}/>})}
     </Paper>)
   }
 }
 
 const mapDispatchToProps = {
-  getStudents, getEvaluations, createEvaluation, updateStatus
+  getStudents, getEvaluations, createEvaluation
 }
 
 const mapStateToProps = (state, props) => ({
@@ -99,8 +83,7 @@ const mapStateToProps = (state, props) => ({
     null : Object.values(state.students),
   evaluations: state.evaluations === null ?
     null : Object.values(state.evaluations),
-  currentStudent: props.match.params.id,
-  status: state.status
+  currentStudent: props.match.params.id
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DisplayStudent)

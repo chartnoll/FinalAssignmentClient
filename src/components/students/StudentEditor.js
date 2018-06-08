@@ -1,8 +1,6 @@
 import React, {PureComponent} from 'react'
-import Button from 'material-ui/Button'
 import {editStudent} from '../../actions/students'
 import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
 
 class StudentEditor extends PureComponent {
 	state = {}

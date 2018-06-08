@@ -3,13 +3,13 @@ import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {getBatches} from '../../actions/batches'
 import {getEvaluations} from '../../actions/evaluations'
-import {getStudents, editStudent, getRandomStudent} from '../../actions/students'
+import {getStudents, editStudent} from '../../actions/students'
 import {userId} from '../../jwt'
 import Paper from 'material-ui/Paper'
 import Button from 'material-ui/Button'
 import StudentCard from './StudentCard'
 import StudentForm from './StudentForm'
-import Grid from 'material-ui/Grid';
+import Grid from 'material-ui/Grid'
 
 class BatchDetails extends PureComponent {
   state = {
@@ -26,7 +26,6 @@ class BatchDetails extends PureComponent {
 
   randomStudentClick = () => {
     const {history, currentBatch} = this.props
-    this.props.getRandomStudent(currentBatch)
     history.push(`/randomstudent/${currentBatch}`)
   }
 
@@ -37,7 +36,7 @@ class BatchDetails extends PureComponent {
   }
 
   render() {
-    const {batch, authenticated, userId, students, evaluations} = this.props
+    const {batch, authenticated, students, evaluations} = this.props
 
     if (!authenticated) return <Redirect to="/login" />
 
@@ -66,7 +65,7 @@ class BatchDetails extends PureComponent {
       <br/>
 
       { this.state.createToggle &&
-        <div><StudentForm/></div>}
+        <div><StudentForm currentBatch={this.props.currentBatch}/></div>}
 
       <br/>
 
@@ -99,11 +98,12 @@ class BatchDetails extends PureComponent {
       }
 
       <div>
-      <Grid container spacing={32}>
+      <Grid container spacing={24}>
           {students.map((student, index) => {
-            if(student.batchNumber === Number(this.props.currentBatch)){
+            if(Number(student.batchNumber) === Number(this.props.currentBatch)){
               return (<StudentCard student={student}
                 currentBatch = {this.props.currentBatch}
+                history={this.props.history}
                 index={index}/>)
             }})}
       </Grid>
@@ -124,7 +124,7 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = {
-  getBatches, getStudents, editStudent, getEvaluations, getRandomStudent
+  getBatches, getStudents, editStudent, getEvaluations
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BatchDetails)

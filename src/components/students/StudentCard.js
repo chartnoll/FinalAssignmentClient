@@ -1,15 +1,13 @@
 import React, {PureComponent} from 'react'
 import Button from 'material-ui/Button'
-import Card, { CardActions, CardHeader, CardTitle, CardText, CardMedia} from 'material-ui/Card'
+import Card, { CardActions, CardHeader, CardMedia} from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
-import {updateStatus} from '../../actions/status'
 import {getStudents, deleteStudent} from '../../actions/students'
 import Avatar from 'material-ui/Avatar'
 import StudentEditor from './StudentEditor'
 import EvaluationChip from './EvaluationChip'
 import Grid from 'material-ui/Grid'
 import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
 
 class StudentCard extends PureComponent {
   state = {
@@ -22,21 +20,20 @@ class StudentCard extends PureComponent {
     this.setState({editToggle: newValue})
   }
 
-  evaluateOnClick = (studentId) => {
-    const {history, currentBatch} = this.props
-    this.props.updateStatus({studentId, currentBatch})
-    history.push(`/students/${studentId}`)
-  }
-
   deleteOnClick = (studentId) => {
     this.props.deleteStudent(studentId, this.props.students)
-    this.props.getStudents(this.props.currentBatch)
+  }
+
+  displayLastEval = () => {
+    const {student, evaluations} = this.props
+    const evals = evaluations.filter((evaluation) => evaluation.studentId === student.id)
+    if( evals.length > 0) return <EvaluationChip evaluation={evals[0]}/>
   }
 
   render() {
-    const {student, evaluations, index} = this.props
+    const {student, index, history} = this.props
     return (
-      <Grid item xs={16} sm={6} key={index}>
+      <Grid item xs={12} sm={6} key={index}>
       <Card
         key={student.id}
         className="student-card"
@@ -45,11 +42,14 @@ class StudentCard extends PureComponent {
         title={student.studentName}
         avatar={<Avatar src={student.studentPicture}/>}
       />
-      <CardMedia>
-        <img src={student.studentPicture} alt="" height="120" />
-      </CardMedia>
+      <CardMedia
+        className='stu_photo'
+        title='photo'
+        image={student.studentPicture}
+        style={{height: 120, paddingTop: '70%'}}
+      />
       <CardActions>
-        <Button onClick={ () => this.evaluateOnClick(student.id)} label="Evaluate">Evaluate</Button>
+        <Button onClick={ () => history.push(`/students/${student.id}`)} label="Evaluate">Evaluate</Button>
         <Button onClick={ () => this.toggleEditor()} label="Edit">Edit</Button>
         <Button onClick={ () => this.deleteOnClick(student.id)} label="Delete">Delete</Button>
     </CardActions>
@@ -58,8 +58,7 @@ class StudentCard extends PureComponent {
         <StudentEditor
           currentStudentID={student.id}
           toggleEditor={this.toggleEditor}/>}
-      { evaluations.map((evaluation) => {if(evaluation.id === student.id)
-        return <EvaluationChip evaluation={evaluation}/>} )}
+      { this.displayLastEval() }
     </Typography>
     </Card>
     </Grid>
@@ -73,7 +72,7 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = {
-  getStudents, deleteStudent, updateStatus
+  getStudents, deleteStudent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentCard)

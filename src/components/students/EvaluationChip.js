@@ -1,7 +1,5 @@
 import React, {PureComponent} from 'react'
-import Button from 'material-ui/Button'
-import Card, { CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import Typography from 'material-ui/Typography'
+import Card, { CardHeader} from 'material-ui/Card'
 import red from '../../images/red.png'
 import amber from '../../images/amber.png'
 import green from '../../images/green.png'
