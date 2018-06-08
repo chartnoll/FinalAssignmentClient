@@ -1,5 +1,5 @@
-# Tic Tac Toe front end
+# Codaisseur Final Assignment Client Side
 
-This is the frontend for the game starter in which you can play Tic Tac Toe with a friend. It's build using the standard `create-react-app` so the usual `yarn start` can be used.
+This is the Client side for an app to evaluator students in the Codaissuer program. You can add and view current batches of students, add and view students progress, and evaluate them. There is also a random student generator that will pick a random stuck from the class to ask a question. The generator is weighted towards students will lower previous evaluation scorings
 
-The backend (server) of this project must be running for the app to function correctly.
+The Final Assignment Server side contains the server side for this app
